@@ -10,14 +10,36 @@ export class AppComponent {
   getName(){
     return this.model.user;
   }
+  
   getTodoItems(){
     //return this.model.items;
-    return this.model.items.filter(item => !item.done);
+    return this.dateOrder().filter(item => !item.done);
   }
-  getTodoItemsDone=()=> this.model.items.filter(item=>item.done);
-  addItem(newItem){
+  getTodoItemsDone(){ 
+  return this.model.items.filter(item=>item.done);
+  }
+
+  getAlta(){
+    return this.getTodoItems().filter(item=>item.prioridade==="alta")
+  }
+  getMedia(){
+    return this.getTodoItems().filter(item=>item.prioridade==="media")
+  }
+  getBaixa(){
+    return this.getTodoItems().filter(item=>item.prioridade==="baixa")
+  }
+
+    addItem(newItem, prioridade, date){
     if(newItem != ""){
-      this.model.items.push(new TodoItem(newItem,false));
+      this.model.items.push(new TodoItem(newItem,false,prioridade, date));
     }
+  }
+  reopenItem(itemReopen){
+    itemReopen.done = false;
+  }
+  dateOrder(){
+    return this.model.items.sort((a,b)=>{
+      return <any>new Date(b.data)-<any>new Date(a.data);
+    });
   }
 }
